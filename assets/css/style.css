@@ -4115,12 +4115,33 @@ body:not(.program-page):not(.legal-page):not(.contact-page)
   .program-link {
     flex-direction: column;
     align-items: flex-start;
-    gap: 0.4rem;
+    gap: 0.25rem;
+    margin: 0;
+    padding: 1rem 0;
+    transform: none !important;
+    background: none !important;
+  }
+  .program-link:hover,
+  .program-link:active {
+    transform: none !important;
+    background: none !important;
+    padding-top: 1rem !important;
+    padding-bottom: 1rem !important;
   }
   .program-link::after {
-    align-self: flex-end;
+    align-self: flex-start;
     margin-left: 0;
-    margin-top: 0.35rem;
+    margin-top: 0.5rem;
+    font-size: 1.1rem;
+  }
+  .program-link:hover::after,
+  .program-link:active::after {
+    transform: none !important;
+  }
+  .program-link:hover .program-name,
+  .program-link:active .program-name {
+    color: var(--programs-text);
+    font-size: 1.14rem;
   }
   .program-name { width: auto; }
 
