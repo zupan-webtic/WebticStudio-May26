@@ -603,9 +603,9 @@ function runPageEnterTransition() {
     return
   }
 
-  const stagger = 36
-  const charDuration = 480
-  const holdAfter = 550
+  const stagger = 18
+  const charDuration = 240
+  const holdAfter = 275
 
   const startPanelExit = () => {
     el.classList.add('is-leaving')
@@ -694,6 +694,11 @@ runPageEnterTransition()
 // pagehide persisted=true means the page is being put in bfcache.
 window.addEventListener('pagehide', (e) => {
   if (e.persisted) sessionStorage.setItem('webticNav', 'pending')
+})
+// When restored from bfcache (back/forward), the module doesn't re-run but this
+// listener fires — dismiss the overlay that was covering when the page left.
+window.addEventListener('pageshow', (e) => {
+  if (e.persisted) runPageEnterTransition()
 })
 
 // Mobile nav
