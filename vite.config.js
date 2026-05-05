@@ -7,7 +7,6 @@ export default defineConfig({
       input: {
         main:             resolve(__dirname, 'index.html'),
         about:            resolve(__dirname, 'about.html'),
-        work:             resolve(__dirname, 'work.html'),
         workIndex:        resolve(__dirname, 'work/index.html'),
         privacy:          resolve(__dirname, 'privacy.html'),
         terms:            resolve(__dirname, 'terms.html'),
