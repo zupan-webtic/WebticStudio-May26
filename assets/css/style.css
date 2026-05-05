@@ -2632,8 +2632,7 @@ body:not(.program-page):not(.legal-page):not(.contact-page)
   }
 
   .contact-next-table tbody tr:first-child th {
-    padding-top: 0;
-    border-top: none;
+    padding-top: 1rem;
   }
 }
 
@@ -5043,7 +5042,19 @@ body.loading { overflow: hidden; }
   --border: rgba(255, 255, 255, 0.1);
 }
 
-/* Contact nav — white bar with dark text */
+/* Contact nav — white form section: force dark hamburger so it's visible on white scrolled header */
+.contact-page header.scrolled:not(.header--dark) .nav-toggle span {
+  background: #0a0a0a;
+}
+.contact-page header.scrolled:not(.header--dark) nav a {
+  color: #555;
+}
+.contact-page header.scrolled:not(.header--dark) nav a:hover {
+  color: #0a0a0a;
+}
+.contact-page header.scrolled:not(.header--dark) .logo-img {
+  filter: brightness(0) invert(0);
+}
 
 /* Unified small-label — 0.75rem uppercase, sidebar section headers */
 .contact-sidebar__studio,
