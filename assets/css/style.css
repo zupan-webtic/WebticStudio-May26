@@ -393,7 +393,7 @@ header.scrolled .nav-toggle span { background: var(--text); }
 }
 
 @media (max-width: 600px) {
-  .program-page header {
+  .program-page header[role="banner"] {
     position: sticky;
     top: 0;
     z-index: 100;
