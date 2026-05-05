@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact | Webtic Studio</title>
+  <meta name="description" content="Start a conversation with Webtic Studio — brand strategy, identity, and web for scaling companies." />
+  <link rel="canonical" href="https://webtic.studio/contact/" />
+  <meta name="theme-color" content="#090909" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/assets/css/style.css" />
+  <script>
+    if (sessionStorage.getItem('webticNav') === 'pending') {
+      document.documentElement.classList.add('js-nav-enter');
+    }
+  </script>
+</head>
+<body class="contact-page">
+  <div id="page-transition" class="page-transition" hidden aria-hidden="true">
+    <p id="page-transition-text" class="page-transition__text"></p>
+  </div>
+
+  <header role="banner">
+    <a href="/" class="logo" aria-label="Webtic Studio">
+      <img src="/assets/images/Logo.svg" alt="Webtic Studio" class="logo-img" />
+    </a>
+    <nav aria-label="Main navigation">
+      <a href="/">Home</a>
+      <a href="/work/">Case Studies</a>
+      <a href="/about">About</a>
+      <a href="/contact/" aria-current="page">Contact</a>
+    </nav>
+    <button class="nav-toggle" aria-expanded="false" aria-controls="nav-mobile" aria-label="Open menu">
+      <span></span><span></span>
+    </button>
+    <div class="nav-mobile" id="nav-mobile" hidden>
+      <a href="/">Home</a>
+      <a href="/work/">Case Studies</a>
+      <a href="/about">About</a>
+      <a href="/contact/" aria-current="page">Contact</a>
+    </div>
+  </header>
+
+  <main id="main-content">
+
+    <!-- Hero — shader background + headline -->
+    <section class="contact-hero" aria-label="Page header">
+      <div class="contact-hero__bg" id="contact-shader" aria-hidden="true"></div>
+      <div class="contact-hero__inner">
+        <h1 class="contact-hero__h1">
+          <span class="contact-hero__h1-dim">Start a<br></span><span class="contact-hero__h1-accent">conversation</span><span class="contact-hero__dot">.</span>
+        </h1>
+      </div>
+    </section>
+
+    <!-- Form + sidebar -->
+    <section class="contact-body">
+      <div class="contact-body__inner">
+
+        <!-- Form -->
+        <div class="contact-form-main">
+          <p class="contact-form-main__label">Share what you can &mdash; we&rsquo;ll shape the rest on a short call.</p>
+          <div class="contact-form-card">
+            <form class="contact-form contact-form--page" action="/api/contact" method="POST" novalidate>
+
+              <div class="form-field">
+                <label for="cf-budget">Budget range</label>
+                <select id="cf-budget" name="budget" required>
+                  <option value="" disabled selected>Select range&hellip;</option>
+                  <option value="10k-25k">&euro;10k &ndash; &euro;25k</option>
+                  <option value="25k-50k">&euro;25k &ndash; &euro;50k</option>
+                  <option value="50k-100k">&euro;50k &ndash; &euro;100k</option>
+                  <option value="100k+">&euro;100k+</option>
+                </select>
+              </div>
+
+              <div class="form-field">
+                <label for="cf-driver">What&rsquo;s driving this</label>
+                <select id="cf-driver" name="driver" required>
+                  <option value="" disabled selected>Select&hellip;</option>
+                  <option value="raise">Upcoming raise</option>
+                  <option value="launch">Product launch</option>
+                  <option value="outgrown">Outgrown current look</option>
+                  <option value="market">New market or audience</option>
+                  <option value="unsure">Not sure yet</option>
+                </select>
+              </div>
+
+              <div class="form-row">
+                <div class="form-field">
+                  <label for="cf-name">Your name</label>
+                  <input type="text" id="cf-name" name="name" autocomplete="name" required placeholder="Jane Smith" />
+                </div>
+                <div class="form-field">
+                  <label for="cf-email">Work email</label>
+                  <input type="email" id="cf-email" name="email" autocomplete="email" required placeholder="jane@company.com" />
+                </div>
+              </div>
+
+              <div class="form-field">
+                <label for="cf-company">Company name</label>
+                <input type="text" id="cf-company" name="company" autocomplete="organization" required placeholder="Company Inc." />
+              </div>
+
+              <div class="form-field">
+                <label for="cf-change">What needs to change? <span class="optional">(optional)</span></label>
+                <textarea id="cf-change" name="message" rows="4" placeholder="Context, links, or what you&rsquo;re trying to fix."></textarea>
+              </div>
+
+              <div class="cta-group contact-form__cta">
+                <button type="submit" class="cta">Send it &rarr;</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Sidebar -->
+        <aside class="contact-sidebar" aria-label="Other ways to reach us">
+          <div class="contact-sidebar__block">
+            <p class="contact-sidebar__studio">Webtic Studio</p>
+            <nav class="program-intro__social" aria-label="Social">
+              <a href="https://www.linkedin.com/company/webticstudio" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+              <a href="https://x.com/webticstudio" target="_blank" rel="noopener noreferrer">X</a>
+            </nav>
+          </div>
+
+          <div class="contact-sidebar__block">
+            <p class="contact-sidebar__sublabel">Direct email</p>
+            <p class="contact-page__mailto"><a href="mailto:hello@webtic.studio">hello@webtic.studio</a></p>
+            <p class="contact-sidebar__note">For everything else &mdash; press, partnerships, or if you&rsquo;d rather just write.</p>
+          </div>
+
+        </aside>
+
+      </div>
+
+      <!-- Where we work — full-width strip -->
+      <div class="contact-locations" aria-label="Office locations">
+        <div class="contact-locations__item">
+          <span class="contact-locations__city">Ljubljana</span>
+          <span class="contact-locations__meta">Central European HQ</span>
+          <span class="hero-loc__time contact-locations__time" data-tz="Europe/Ljubljana">--:--</span>
+        </div>
+        <div class="contact-locations__item">
+          <span class="contact-locations__city">London</span>
+          <span class="contact-locations__meta">UK &amp; Western Europe</span>
+          <span class="hero-loc__time contact-locations__time" data-tz="Europe/London">--:--</span>
+        </div>
+        <div class="contact-locations__item">
+          <span class="contact-locations__city">San Francisco</span>
+          <span class="contact-locations__meta">US &amp; North America</span>
+          <span class="hero-loc__time contact-locations__time" data-tz="America/Los_Angeles">--:--</span>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- What happens next -->
+    <section class="contact-next-inverted" aria-labelledby="contact-next-h2" data-nav-dark>
+      <div class="contact-next-inverted__inner">
+        <h2 id="contact-next-h2" class="contact-next-inverted__heading">What happens next</h2>
+        <div class="contact-next-inverted__table-wrap">
+          <table class="contact-next-table">
+            <caption class="sr-only">What happens next after you get in touch</caption>
+            <tbody>
+              <tr>
+                <th scope="row">Response time</th>
+                <td>Within 48 hours. Always.</td>
+              </tr>
+              <tr>
+                <th scope="row">First call</th>
+                <td>30 minutes. We ask the questions. You ask yours.</td>
+              </tr>
+              <tr>
+                <th scope="row">No pitch deck</th>
+                <td>We don&rsquo;t send decks before we understand the problem.</td>
+              </tr>
+              <tr>
+                <th scope="row">No retainer pressure</th>
+                <td>If it&rsquo;s not the right fit, we&rsquo;ll tell you.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-inner">
+
+      <div class="footer-main">
+        <div class="footer-brand">
+          <a href="/" class="footer-wordmark">Webtic Studio</a>
+          <p class="footer-tagline">Brand strategy, identity, and web<br>for companies that are going somewhere.</p>
+        </div>
+        <div class="footer-cols">
+          <div class="footer-col">
+            <p class="footer-col__label">Explore</p>
+            <nav class="footer-col__nav" aria-label="Explore">
+              <a href="/">Home</a>
+              <a href="/work/">Case Studies</a>
+              <a href="/about">About</a>
+              <a href="/contact/">Contact</a>
+            </nav>
+          </div>
+          <div class="footer-col">
+            <p class="footer-col__label">Programs</p>
+            <nav class="footer-col__nav" aria-label="Programs">
+              <a href="/programs/sprint/">Sprint</a>
+              <a href="/programs/refresh/">Refresh</a>
+              <a href="/programs/reframe/">Reframe</a>
+              <a href="/programs/creation/">Creation</a>
+            </nav>
+          </div>
+          <div class="footer-col">
+            <p class="footer-col__label">Connect</p>
+            <nav class="footer-col__nav" aria-label="Connect">
+              <a href="mailto:hello@webtic.studio">hello@webtic.studio</a>
+              <a href="https://www.linkedin.com/company/webticstudio" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+              <a href="https://x.com/webticstudio" target="_blank" rel="noopener noreferrer">X</a>
+            </nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p class="footer-copyright">&copy; 2026 Webtic Studio</p>
+        <nav class="footer-legal" aria-label="Legal">
+          <a href="/privacy/">Privacy Policy</a>
+          <a href="/terms/">Terms of Service</a>
+        </nav>
+      </div>
+
+    </div>
+  </footer>
+
+  <script type="module" src="/assets/js/main.js"></script>
+</body>
+</html>

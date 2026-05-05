@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+Disallow: /api/
+Disallow: /admin/
+Disallow: /*.json$
+
+Sitemap: https://webtic.studio/sitemap.xml
