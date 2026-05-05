@@ -4211,6 +4211,7 @@ body:not(.program-page):not(.legal-page):not(.contact-page)
   }
 
   .program-row__header::before { display: none; }
+  .program-challenges--grid .program-challenge-card::before { display: none; }
 
   .program-row__name { font-size: clamp(1.75rem, 7vw, 2.25rem); letter-spacing: -0.04em; }
   .program-row__desc { font-size: 0.875rem; }
