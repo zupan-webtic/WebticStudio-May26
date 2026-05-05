@@ -89,13 +89,33 @@
     <button class="nav-toggle" aria-expanded="false" aria-controls="nav-mobile" aria-label="Open menu">
       <span></span><span></span>
     </button>
-    <div class="nav-mobile" id="nav-mobile" hidden>
+  </header>
+  <div class="nav-mobile" id="nav-mobile" hidden>
+    <nav class="nav-mobile__primary" aria-label="Main navigation">
       <a href="/">Home</a>
       <a href="/work/">Case Studies</a>
       <a href="/about">About</a>
       <a href="/contact/">Contact</a>
+    </nav>
+    <div class="nav-mobile__secondary">
+      <div class="nav-mobile__group">
+        <p class="nav-mobile__group-label">Case Studies</p>
+        <div class="nav-mobile__group-links">
+          <a href="/work/evolt/">Evolt</a>
+          <a href="/work/naka/">NAKA</a>
+        </div>
+      </div>
+      <div class="nav-mobile__group">
+        <p class="nav-mobile__group-label">Programs</p>
+        <div class="nav-mobile__group-links">
+          <a href="/programs/refresh/">Refresh</a>
+          <a href="/programs/creation/">Creation</a>
+          <a href="/programs/sprint/">Sprint</a>
+          <a href="/programs/reframe/">Reframe</a>
+        </div>
+      </div>
     </div>
-  </header>
+  </div>
 
   <main id="main-content">
 
@@ -294,36 +314,34 @@
         <div class="s-cases__track">
 
           <article class="case">
-            <div class="case__content">
+            <a href="/work/evolt/" class="case__content">
               <div class="case__top">
                 <div class="case__meta">
                   <span class="case__client">Evolt</span>
                   <span class="case__sector">Fintech Development · International</span>
                 </div>
-                <span class="case__scope">Brand Strategy, Identity, Web</span>
               </div>
               <div class="case__body">
                 <h3 class="case__headline">A fintech development agency whose brand had never caught up with the quality of its work.</h3>
-                <a href="/work/evolt/" class="case__cta-link">View case study</a>
+                <span class="case__scope"><span class="case__scope-tag">Brand Strategy</span><span class="case__scope-tag">Identity</span><span class="case__scope-tag">Web</span></span>
               </div>
-            </div>
+            </a>
             <a href="/work/evolt/" class="case__visual img-placeholder" aria-label="Evolt case study"><span aria-hidden="true">Image</span></a>
           </article>
 
           <article class="case">
-            <div class="case__content">
+            <a href="/work/naka/" class="case__content">
               <div class="case__top">
                 <div class="case__meta">
                   <span class="case__client">NAKA</span>
                   <span class="case__sector">Fintech · Series A</span>
                 </div>
-                <span class="case__scope">Web Design, Development</span>
               </div>
               <div class="case__body">
                 <h3 class="case__headline">The product was ahead of its category. The website made it look like everything else.</h3>
-                <a href="/work/naka/" class="case__cta-link">View case study</a>
+                <span class="case__scope"><span class="case__scope-tag">Web Design</span><span class="case__scope-tag">Development</span></span>
               </div>
-            </div>
+            </a>
             <a href="/work/naka/" class="case__visual img-placeholder" aria-label="NAKA case study"><span aria-hidden="true">Image</span></a>
           </article>
 
@@ -481,7 +499,7 @@
       <div class="footer-main">
         <div class="footer-brand">
           <a href="/" class="footer-wordmark">Webtic Studio</a>
-          <p class="footer-tagline">Brand strategy, identity, and web<br>for companies that are going somewhere.</p>
+          <p class="footer-tagline">Building scalable brands for cutting-edge companies.</p>
         </div>
         <div class="footer-cols">
           <div class="footer-col">

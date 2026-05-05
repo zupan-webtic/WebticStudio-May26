@@ -700,20 +700,31 @@ window.addEventListener('pagehide', (e) => {
 const toggle = document.querySelector('.nav-toggle')
 const mobileNav = document.getElementById('nav-mobile')
 
+function closeMobileNav () {
+  mobileNav.hidden = true
+  toggle.setAttribute('aria-expanded', 'false')
+  toggle.setAttribute('aria-label', 'Open menu')
+  document.body.style.overflow = ''
+}
+
 if (toggle && mobileNav) {
   toggle.addEventListener('click', () => {
     const open = mobileNav.hidden
     mobileNav.hidden = !open
     toggle.setAttribute('aria-expanded', open)
+    toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu')
     document.body.style.overflow = open ? 'hidden' : ''
   })
 
   mobileNav.querySelectorAll('a').forEach(a => {
-    a.addEventListener('click', () => {
-      mobileNav.hidden = true
-      toggle.setAttribute('aria-expanded', 'false')
-      document.body.style.overflow = ''
-    })
+    a.addEventListener('click', closeMobileNav)
+  })
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && !mobileNav.hidden) {
+      closeMobileNav()
+      toggle.focus()
+    }
   })
 }
 

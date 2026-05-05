@@ -36,13 +36,33 @@
     <button class="nav-toggle" aria-expanded="false" aria-controls="nav-mobile" aria-label="Open menu">
       <span></span><span></span>
     </button>
-    <div class="nav-mobile" id="nav-mobile" hidden>
+  </header>
+  <div class="nav-mobile" id="nav-mobile" hidden>
+    <nav class="nav-mobile__primary" aria-label="Main navigation">
       <a href="/">Home</a>
       <a href="/work/">Case Studies</a>
       <a href="/about">About</a>
       <a href="/contact/">Contact</a>
+    </nav>
+    <div class="nav-mobile__secondary">
+      <div class="nav-mobile__group">
+        <p class="nav-mobile__group-label">Case Studies</p>
+        <div class="nav-mobile__group-links">
+          <a href="/work/evolt/">Evolt</a>
+          <a href="/work/naka/">NAKA</a>
+        </div>
+      </div>
+      <div class="nav-mobile__group">
+        <p class="nav-mobile__group-label">Programs</p>
+        <div class="nav-mobile__group-links">
+          <a href="/programs/refresh/">Refresh</a>
+          <a href="/programs/creation/">Creation</a>
+          <a href="/programs/sprint/">Sprint</a>
+          <a href="/programs/reframe/">Reframe</a>
+        </div>
+      </div>
     </div>
-  </header>
+  </div>
 
   <main id="main-content">
 
@@ -296,7 +316,7 @@
       <div class="footer-main">
         <div class="footer-brand">
           <a href="/" class="footer-wordmark">Webtic Studio</a>
-          <p class="footer-tagline">Brand strategy, identity, and web<br>for companies that are going somewhere.</p>
+          <p class="footer-tagline">Building scalable brands for cutting-edge companies.</p>
         </div>
         <div class="footer-cols">
           <div class="footer-col">
