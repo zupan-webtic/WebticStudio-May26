@@ -1799,7 +1799,11 @@ body.programs-invert .s-team {
   transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-.team-member__card:hover .team-member__photo,
+@media (hover: hover) {
+  .team-member__card:hover .team-member__photo {
+    transform: scale(1.08);
+  }
+}
 .team-member__card:focus-within .team-member__photo {
   transform: scale(1.08);
 }
@@ -1841,7 +1845,13 @@ body.programs-invert .s-team {
   transition: opacity 0.3s ease, max-height 0.35s ease, visibility 0.3s ease, margin-top 0.3s ease;
 }
 
-.team-member__card:hover .team-member__meta,
+@media (hover: hover) {
+  .team-member__card:hover .team-member__meta {
+    opacity: 1;
+    visibility: visible;
+    max-height: 4.5rem;
+  }
+}
 .team-member__card:focus-within .team-member__meta {
   opacity: 1;
   visibility: visible;
@@ -4016,14 +4026,16 @@ body:not(.program-page):not(.legal-page):not(.contact-page)
   .team-member { flex-basis: 180px; }
   .team-marquee__viewport {
     overflow-x: auto;
+    overflow-y: hidden;
     scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x;
     scrollbar-width: none;
   }
   .team-marquee__viewport::-webkit-scrollbar { display: none; }
   .team-marquee__track {
     animation: none !important;
     transform: none !important;
+    will-change: auto;
   }
   .team-grid--marquee-clone { display: none; }
   .team-member { scroll-snap-align: start; }
