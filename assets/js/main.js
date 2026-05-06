@@ -836,16 +836,18 @@ if (form) {
 
 ;(function () {
   const originalTitle = document.title
-  const awayMsg = "Your brand isn't going to fix itself.   "
+  const words = ["Your", "brand", "isn't", "going", "to", "fix", "itself."]
   let ticker = null
   let pos = 0
 
   document.addEventListener('visibilitychange', () => {
     if (document.hidden) {
-      ticker = setInterval(() => {
-        document.title = awayMsg.slice(pos) + awayMsg.slice(0, pos)
-        pos = (pos + 1) % awayMsg.length
-      }, 150)
+      const tick = () => {
+        document.title = [...words.slice(pos), ...words.slice(0, pos)].join(' ')
+        pos = (pos + 1) % words.length
+      }
+      tick()
+      ticker = setInterval(tick, 1000)
     } else {
       clearInterval(ticker)
       ticker = null
