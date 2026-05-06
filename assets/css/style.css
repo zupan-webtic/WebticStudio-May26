@@ -4027,7 +4027,6 @@ body:not(.program-page):not(.legal-page):not(.contact-page)
   .team-marquee__viewport {
     overflow-x: auto;
     overflow-y: hidden;
-    scroll-snap-type: x mandatory;
     overscroll-behavior-x: contain;
     scrollbar-width: none;
   }
@@ -4038,7 +4037,6 @@ body:not(.program-page):not(.legal-page):not(.contact-page)
     will-change: auto;
   }
   .team-grid--marquee-clone { display: none; }
-  .team-member { scroll-snap-align: start; }
 
   .s-contact .container { grid-template-columns: 1fr; gap: 3rem; }
   .s-contact h2 { position: static; }
