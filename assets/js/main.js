@@ -760,23 +760,14 @@ if (teamCarousel) {
   viewport.appendChild(track)
 
   viewport.addEventListener('touchstart', () => track.classList.add('is-paused'), { passive: true })
-  viewport.addEventListener('touchend', () => track.classList.remove('is-paused'), { passive: true })
-
-  // JS snap-on-release: avoids CSS scroll-snap state machine which causes
-  // iOS Safari to lock the touch layer after a few back-and-forth swipes
-  const snapToNearest = () => {
-    if (window.innerWidth > 900) return
-    const cards = Array.from(track.querySelectorAll('.team-member'))
-    if (!cards.length) return
-    const vpLeft = viewport.getBoundingClientRect().left
-    let best = cards[0], bestDist = Infinity
-    cards.forEach(card => {
-      const dist = Math.abs(card.getBoundingClientRect().left - vpLeft)
-      if (dist < bestDist) { bestDist = dist; best = card }
-    })
-    viewport.scrollTo({ left: best.offsetLeft, behavior: 'smooth' })
-  }
-  viewport.addEventListener('touchend', snapToNearest, { passive: true })
+  viewport.addEventListener('touchend', () => {
+    track.classList.remove('is-paused')
+    // iOS Safari routes taps to the most recently active scroll container even
+    // after the gesture ends. Briefly removing pointer-events forces the browser
+    // to recalculate the hit target on the next touch, restoring normal tap routing.
+    viewport.style.pointerEvents = 'none'
+    setTimeout(() => { viewport.style.pointerEvents = '' }, 100)
+  }, { passive: true })
 }
 
 // Case study lightbox
