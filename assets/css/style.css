@@ -1114,10 +1114,12 @@ header.scrolled .nav-toggle span { background: var(--text); }
     color 0.2s ease;
 }
 
-.program-row__link:hover,
-.program-row__link:focus-visible {
-  transform: translateX(8px);
-  background-color: color-mix(in srgb, var(--programs-bg, var(--bg)) 94%, var(--programs-text, var(--text)) 6%);
+@media (hover: hover) {
+  .program-row__link:hover,
+  .program-row__link:focus-visible {
+    transform: translateX(8px);
+    background-color: color-mix(in srgb, var(--programs-bg, var(--bg)) 94%, var(--programs-text, var(--text)) 6%);
+  }
 }
 
 .program-row__thumbs {
@@ -1219,10 +1221,12 @@ header.scrolled .nav-toggle span { background: var(--text); }
       color 0.2s ease;
   }
 
-  .program-row__link:hover,
-  .program-row__link:focus-visible {
-    --hover-shift: 8px;
-    transform: scale(var(--program-row-scale)) translateX(var(--hover-shift));
+  @media (hover: hover) {
+    .program-row__link:hover,
+    .program-row__link:focus-visible {
+      --hover-shift: 8px;
+      transform: scale(var(--program-row-scale)) translateX(var(--hover-shift));
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
