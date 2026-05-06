@@ -1104,7 +1104,6 @@ header.scrolled .nav-toggle span { background: var(--text); }
   text-decoration: none;
   color: inherit;
   cursor: pointer;
-  border-radius: 12px;
   padding: clamp(0.55rem, 1.2vw, 0.85rem) clamp(0.65rem, 1.4vw, 1rem);
   margin-left: calc(-1 * clamp(0.65rem, 1.4vw, 1rem));
   box-sizing: border-box;
@@ -1126,7 +1125,6 @@ header.scrolled .nav-toggle span { background: var(--text); }
   width: 100%;
   max-width: 22rem;
   margin-top: 0.85rem;
-  border-radius: 6px;
   overflow: hidden;
 }
 
@@ -1136,7 +1134,6 @@ header.scrolled .nav-toggle span { background: var(--text); }
   height: auto;
   aspect-ratio: 8 / 5;
   object-fit: cover;
-  border-radius: 6px;
   background: #f8f8f8;
   transition: transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
@@ -4243,7 +4240,6 @@ body:not(.program-page):not(.legal-page):not(.contact-page)
 
   .program-row__thumb {
     border: none;
-    border-radius: 2px;
     aspect-ratio: 4 / 3;
   }
 
