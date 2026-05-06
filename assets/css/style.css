@@ -4028,7 +4028,7 @@ body:not(.program-page):not(.legal-page):not(.contact-page)
     overflow-x: auto;
     overflow-y: hidden;
     scroll-snap-type: x mandatory;
-    touch-action: pan-x;
+    overscroll-behavior-x: contain;
     scrollbar-width: none;
   }
   .team-marquee__viewport::-webkit-scrollbar { display: none; }
