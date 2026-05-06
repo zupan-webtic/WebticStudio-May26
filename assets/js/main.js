@@ -836,9 +836,21 @@ if (form) {
 
 ;(function () {
   const originalTitle = document.title
+  const awayMsg = "Your brand isn't going to fix itself.   "
+  let ticker = null
+  let pos = 0
+
   document.addEventListener('visibilitychange', () => {
-    document.title = document.hidden
-      ? "Your brand isn't going to fix itself."
-      : originalTitle
+    if (document.hidden) {
+      ticker = setInterval(() => {
+        document.title = awayMsg.slice(pos) + awayMsg.slice(0, pos)
+        pos = (pos + 1) % awayMsg.length
+      }, 150)
+    } else {
+      clearInterval(ticker)
+      ticker = null
+      pos = 0
+      document.title = originalTitle
+    }
   })
 })()
