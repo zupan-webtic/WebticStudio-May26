@@ -4844,7 +4844,7 @@ body.loading { overflow: hidden; }
 
 .cs-img-wide__inner img {
   width: 100%;
-  aspect-ratio: 16 / 8;
+  aspect-ratio: 16 / 9;
   object-fit: cover;
   display: block;
   border-radius: 2px;
@@ -4867,11 +4867,16 @@ body.loading { overflow: hidden; }
   border-radius: 2px;
 }
 
-.cs-img-inline img,
+.cs-img-inline img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 2px;
+}
+
 .cs-img-inline video {
   width: 100%;
-  aspect-ratio: 16 / 9;
-  object-fit: cover;
+  height: auto;
   display: block;
   border-radius: 2px;
 }
