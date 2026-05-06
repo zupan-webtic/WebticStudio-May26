@@ -1119,6 +1119,8 @@ header.scrolled .nav-toggle span { background: var(--text); }
   width: 100%;
   max-width: 22rem;
   margin-top: 0.85rem;
+  border-radius: 6px;
+  overflow: hidden;
 }
 
 .program-row__thumb {
@@ -1127,10 +1129,14 @@ header.scrolled .nav-toggle span { background: var(--text); }
   height: auto;
   aspect-ratio: 8 / 5;
   object-fit: cover;
-  border: 1px solid var(--programs-line);
   border-radius: 6px;
   background: #f8f8f8;
-  transition: border-color 0.22s ease, box-shadow 0.22s ease;
+  transition: transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.program-row__link:hover .program-row__thumb,
+.program-row__link:focus-visible .program-row__thumb {
+  transform: scale(1.06);
 }
 
 .program-row__link::after {
