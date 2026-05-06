@@ -4842,6 +4842,14 @@ body.loading { overflow: hidden; }
   border-radius: 2px;
 }
 
+.cs-img-wide__inner img {
+  width: 100%;
+  aspect-ratio: 16 / 8;
+  object-fit: cover;
+  display: block;
+  border-radius: 2px;
+}
+
 .cs-img-wide__caption {
   margin-top: 0.75rem;
   font-size: 0.875rem;
@@ -4856,6 +4864,15 @@ body.loading { overflow: hidden; }
 .cs-img-inline .img-placeholder {
   width: 100%;
   aspect-ratio: 16 / 9;
+  border-radius: 2px;
+}
+
+.cs-img-inline img,
+.cs-img-inline video {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  display: block;
   border-radius: 2px;
 }
 
@@ -4877,6 +4894,23 @@ body.loading { overflow: hidden; }
   width: 100%;
   aspect-ratio: 4 / 3;
   border-radius: 2px;
+}
+
+.cs-img-grid figure img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  display: block;
+  border-radius: 2px;
+}
+
+.cs-img-grid figure video {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: contain;
+  display: block;
+  border-radius: 2px;
+  background: #0a0a0a;
 }
 
 .cs-img-grid figcaption {
