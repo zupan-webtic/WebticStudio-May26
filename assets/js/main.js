@@ -833,3 +833,12 @@ if (form) {
     }
   })
 }
+
+;(function () {
+  const originalTitle = document.title
+  document.addEventListener('visibilitychange', () => {
+    document.title = document.hidden
+      ? "Your brand isn't going to fix itself."
+      : originalTitle
+  })
+})()
