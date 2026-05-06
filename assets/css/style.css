@@ -5007,18 +5007,21 @@ body.loading { overflow: hidden; }
 .cs-lightbox {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0);
+  background: rgba(0, 0, 0, 0.92);
   z-index: 9999;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: clamp(1.5rem, 4vw, 3rem);
   cursor: zoom-out;
-  transition: background 0.25s ease;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
 }
 
 .cs-lightbox.is-open {
-  background: rgba(0, 0, 0, 0.92);
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .cs-lightbox__img {

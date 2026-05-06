@@ -774,8 +774,6 @@ if (csImgs.length) {
   lb.setAttribute('role', 'dialog')
   lb.setAttribute('aria-modal', 'true')
   lb.setAttribute('aria-label', 'Image preview')
-  lb.hidden = true
-
   const lbClose = document.createElement('button')
   lbClose.className = 'cs-lightbox__close'
   lbClose.setAttribute('aria-label', 'Close preview')
@@ -792,7 +790,6 @@ if (csImgs.length) {
   const openLb = (src, alt) => {
     lbImg.src = src
     lbImg.alt = alt || ''
-    lb.hidden = false
     requestAnimationFrame(() => lb.classList.add('is-open'))
     document.body.style.overflow = 'hidden'
   }
@@ -800,7 +797,6 @@ if (csImgs.length) {
   const closeLb = () => {
     lb.classList.remove('is-open')
     lb.addEventListener('transitionend', () => {
-      lb.hidden = true
       document.body.style.overflow = ''
     }, { once: true })
   }
