@@ -836,23 +836,7 @@ if (form) {
 
 ;(function () {
   const originalTitle = document.title
-  const words = ["Your", "brand", "isn't", "going", "to", "fix", "itself."]
-  let ticker = null
-  let pos = 0
-
   document.addEventListener('visibilitychange', () => {
-    if (document.hidden) {
-      const tick = () => {
-        document.title = [...words.slice(pos), ...words.slice(0, pos)].join(' ')
-        pos = (pos + 1) % words.length
-      }
-      tick()
-      ticker = setInterval(tick, 1000)
-    } else {
-      clearInterval(ticker)
-      ticker = null
-      pos = 0
-      document.title = originalTitle
-    }
+    document.title = document.hidden ? 'Still here.' : originalTitle
   })
 })()
