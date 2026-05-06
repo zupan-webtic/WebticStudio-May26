@@ -4844,8 +4844,7 @@ body.loading { overflow: hidden; }
 
 .cs-img-wide__inner img {
   width: 100%;
-  aspect-ratio: 16 / 9;
-  object-fit: cover;
+  height: auto;
   display: block;
   border-radius: 2px;
 }
@@ -4911,11 +4910,9 @@ body.loading { overflow: hidden; }
 
 .cs-img-grid figure video {
   width: 100%;
-  aspect-ratio: 16 / 9;
-  object-fit: contain;
+  height: auto;
   display: block;
   border-radius: 2px;
-  background: #0a0a0a;
 }
 
 .cs-img-grid figcaption {
