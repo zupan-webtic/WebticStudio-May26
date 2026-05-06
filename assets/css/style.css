@@ -4943,30 +4943,58 @@ body.loading { overflow: hidden; }
   cursor: pointer;
 }
 
+.cs-img-link::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0);
+  transition: background 0.35s ease;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.cs-img-link:hover::before,
+.cs-img-link:focus-visible::before {
+  background: rgba(0, 0, 0, 0.58);
+}
+
 .cs-img-link img {
+  display: block;
   transition: transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .cs-img-link:hover img,
 .cs-img-link:focus-visible img {
-  transform: scale(1.03);
+  transform: scale(1.04);
 }
 
 .cs-img-link__label {
   position: absolute;
-  bottom: 1rem;
-  right: 1rem;
-  background: rgba(255, 255, 255, 0.95);
-  color: #0a0a0a;
-  padding: 0.5rem 1rem;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  color: #ffffff;
+  z-index: 2;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.28s ease, transform 0.28s ease;
+  pointer-events: none;
+}
+
+.cs-img-link__arrow {
+  font-size: 2rem;
+  line-height: 1;
+  font-weight: 300;
+}
+
+.cs-img-link__text {
   font-size: 0.8125rem;
   font-weight: 500;
-  letter-spacing: 0.03em;
-  border-radius: 2px;
-  opacity: 0;
-  transform: translateY(4px);
-  transition: opacity 0.22s ease, transform 0.22s ease;
-  pointer-events: none;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
 }
 
 .cs-img-link:hover .cs-img-link__label,
