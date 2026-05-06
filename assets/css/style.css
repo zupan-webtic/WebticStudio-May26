@@ -1109,9 +1109,16 @@ header.scrolled .nav-toggle span { background: var(--text); }
   margin-left: calc(-1 * clamp(0.65rem, 1.4vw, 1rem));
   box-sizing: border-box;
   transition:
-    background-color 0.22s ease,
-    box-shadow 0.22s ease,
+    background-color 0.32s ease,
+    box-shadow 0.32s ease,
+    transform 0.38s cubic-bezier(0.34, 1.02, 0.68, 1),
     color 0.2s ease;
+}
+
+.program-row__link:hover,
+.program-row__link:focus-visible {
+  transform: translateX(8px);
+  background-color: color-mix(in srgb, var(--programs-bg, var(--bg)) 94%, var(--programs-text, var(--text)) 6%);
 }
 
 .program-row__thumbs {
@@ -1144,14 +1151,19 @@ header.scrolled .nav-toggle span { background: var(--text); }
   margin-top: 0.35rem;
   font-size: 1.1rem;
   font-weight: 300;
-  color: var(--muted);
-  transition: color 0.2s ease, transform 0.25s ease;
+  color: var(--programs-muted, var(--muted));
+  transition: color 0.32s ease, transform 0.38s cubic-bezier(0.34, 1.02, 0.68, 1);
+}
+
+.program-row__link:hover::after,
+.program-row__link:focus-visible::after {
+  color: var(--programs-text, var(--text));
+  transform: translateX(10px);
 }
 
 .program-row__link:hover .program-row__name,
 .program-row__link:focus-visible .program-row__name {
-  color: var(--cta-accent);
-  transform: scale(1.04);
+  color: var(--programs-text);
 }
 
 .program-row__link:focus-visible {
@@ -1196,18 +1208,24 @@ header.scrolled .nav-toggle span { background: var(--text); }
 
   .program-row__link {
     opacity: calc(0.26 + var(--row-focus, 1) * 0.74);
-    /* Quadratic in --row-focus so size grows mostly when the row is near full opacity. */
     --program-row-scale: calc(1 + 0.082 * var(--row-focus, 0) * var(--row-focus, 0));
-    transform: scale(var(--program-row-scale));
+    --hover-shift: 0px;
+    transform: scale(var(--program-row-scale)) translateX(var(--hover-shift));
     transform-origin: left center;
     width: min(100%, calc(42rem + 2.25rem * var(--row-focus, 0) * var(--row-focus, 0)));
     transition:
       opacity 0.22s ease,
-      transform 0.22s ease,
+      transform 0.38s cubic-bezier(0.34, 1.02, 0.68, 1),
       width 0.22s ease,
-      background-color 0.22s ease,
-      box-shadow 0.22s ease,
+      background-color 0.32s ease,
+      box-shadow 0.32s ease,
       color 0.2s ease;
+  }
+
+  .program-row__link:hover,
+  .program-row__link:focus-visible {
+    --hover-shift: 8px;
+    transform: scale(var(--program-row-scale)) translateX(var(--hover-shift));
   }
 
   @media (prefers-reduced-motion: reduce) {
