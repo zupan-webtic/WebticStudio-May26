@@ -763,6 +763,60 @@ if (teamCarousel) {
   viewport.addEventListener('touchend', () => track.classList.remove('is-paused'), { passive: true })
 }
 
+// Case study lightbox
+const csImgs = Array.from(
+  document.querySelectorAll('.cs-img-wide__inner img, .cs-img-inline img, .cs-img-grid figure img')
+).filter(el => !el.closest('.cs-img-link'))
+
+if (csImgs.length) {
+  const lb = document.createElement('div')
+  lb.className = 'cs-lightbox'
+  lb.setAttribute('role', 'dialog')
+  lb.setAttribute('aria-modal', 'true')
+  lb.setAttribute('aria-label', 'Image preview')
+  lb.hidden = true
+
+  const lbClose = document.createElement('button')
+  lbClose.className = 'cs-lightbox__close'
+  lbClose.setAttribute('aria-label', 'Close preview')
+  lbClose.textContent = '✕'
+
+  const lbImg = document.createElement('img')
+  lbImg.className = 'cs-lightbox__img'
+  lbImg.alt = ''
+
+  lb.appendChild(lbClose)
+  lb.appendChild(lbImg)
+  document.body.appendChild(lb)
+
+  const openLb = (src, alt) => {
+    lbImg.src = src
+    lbImg.alt = alt || ''
+    lb.hidden = false
+    requestAnimationFrame(() => lb.classList.add('is-open'))
+    document.body.style.overflow = 'hidden'
+  }
+
+  const closeLb = () => {
+    lb.classList.remove('is-open')
+    lb.addEventListener('transitionend', () => {
+      lb.hidden = true
+      document.body.style.overflow = ''
+    }, { once: true })
+  }
+
+  csImgs.forEach(el => {
+    el.style.cursor = 'zoom-in'
+    el.addEventListener('click', () => openLb(el.src, el.alt))
+  })
+
+  lbClose.addEventListener('click', closeLb)
+  lb.addEventListener('click', e => { if (e.target === lb) closeLb() })
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && lb.classList.contains('is-open')) closeLb()
+  })
+}
+
 // Contact form
 const form = document.querySelector('.contact-form')
 if (form) {

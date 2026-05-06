@@ -5003,6 +5003,58 @@ body.loading { overflow: hidden; }
   transform: translateY(0);
 }
 
+/* ── Case study lightbox ── */
+.cs-lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(1.5rem, 4vw, 3rem);
+  cursor: zoom-out;
+  transition: background 0.25s ease;
+}
+
+.cs-lightbox.is-open {
+  background: rgba(0, 0, 0, 0.92);
+}
+
+.cs-lightbox__img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 2px;
+  transform: scale(0.94);
+  opacity: 0;
+  transition: transform 0.32s cubic-bezier(0.34, 1.06, 0.64, 1), opacity 0.25s ease;
+  cursor: default;
+}
+
+.cs-lightbox.is-open .cs-lightbox__img {
+  transform: scale(1);
+  opacity: 1;
+}
+
+.cs-lightbox__close {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.5rem;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 1.25rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0.5rem;
+  transition: color 0.15s ease;
+}
+
+.cs-lightbox__close:hover {
+  color: #fff;
+}
+
 /* ── Case study quote / testimonial blocks ── */
 
 .cs-quote-block {
