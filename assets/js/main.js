@@ -907,7 +907,7 @@ if (csImgs.length) {
 
   csImgs.forEach(el => {
     el.style.cursor = 'zoom-in'
-    el.addEventListener('click', () => openLb(el.src, el.alt))
+    el.addEventListener('click', () => openLb(el.currentSrc || el.src, el.alt))
   })
 
   lbClose.addEventListener('click', closeLb)
