@@ -277,6 +277,79 @@ button.cta:disabled:hover {
   max-width: 36ch;
 }
 
+/* Submit button on the contact form: outlined rectangle with arrow, matches
+   the existing site CTA pattern (text + accent underline) but gives the form
+   a clear, scannable submit affordance. Hover fills in. */
+.contact-form button.cta[type="submit"] {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.55rem;
+  width: auto !important;
+  font-family: var(--font-body);
+  font-size: 0.95rem !important;
+  font-weight: 400;
+  line-height: 1 !important;
+  letter-spacing: 0.01em;
+  padding: 0.85rem 1.15rem !important;
+  border: 1px solid #0a0a0a !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: #0a0a0a !important;
+  text-align: left !important;
+  text-decoration: none;
+  cursor: pointer;
+  overflow: hidden;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.15s ease;
+}
+
+.contact-form button.cta[type="submit"] .cta__arrow {
+  display: inline-block;
+  transition: transform 0.32s cubic-bezier(0.34, 1.06, 0.64, 1);
+}
+
+.contact-form button.cta[type="submit"]:hover {
+  background: #0a0a0a !important;
+  color: #ffffff !important;
+  transform: translateY(-1px);
+}
+
+.contact-form button.cta[type="submit"]:hover .cta__arrow {
+  transform: translateX(4px);
+}
+
+.contact-form button.cta[type="submit"]:active {
+  transform: translateY(0);
+}
+
+/* Arrow shoots off on click, then a fresh one slides in from the left. */
+.contact-form button.cta[type="submit"]:active .cta__arrow {
+  animation: ctaArrowFly 0.55s cubic-bezier(0.55, 0.05, 0.25, 1);
+}
+
+@keyframes ctaArrowFly {
+  0%   { transform: translateX(4px); opacity: 1; }
+  40%  { transform: translateX(28px); opacity: 0; }
+  41%  { transform: translateX(-18px); opacity: 0; }
+  100% { transform: translateX(0); opacity: 1; }
+}
+
+.contact-form button.cta[type="submit"]:focus-visible {
+  outline: 2px solid var(--cta-accent);
+  outline-offset: 3px;
+}
+
+.contact-form button.cta[type="submit"]:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.contact-form button.cta[type="submit"]:disabled .cta__arrow {
+  animation: none;
+  transform: none;
+}
+
 .cta-group {
   display: flex;
   flex-direction: column;
@@ -1738,15 +1811,19 @@ body.programs-invert .s-team {
   display: flex;
   width: max-content;
   will-change: transform;
-  animation: team-carousel-scroll 28s linear infinite;
+}
+
+/* Marquee runs only on desktop. Scoping it to a media query (instead of relying
+   on a JS-applied .team-carousel--mobile class) means the animation cannot
+   leak onto mobile under any FOUC / JS-error / race condition. */
+@media (min-width: 901px) {
+  .team-carousel__track {
+    animation: team-carousel-scroll 28s linear infinite;
+  }
 }
 
 .team-carousel--mobile {
   touch-action: pan-y;
-}
-
-.team-carousel--mobile .team-carousel__track {
-  animation: none !important;
 }
 
 @media (hover: hover) {
