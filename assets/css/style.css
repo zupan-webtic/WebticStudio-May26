@@ -2806,17 +2806,16 @@ body:not(.program-page):not(.legal-page):not(.contact-page)
 
 /* Work page — scrolling image reel */
 .wk-case__image {
-  max-width: var(--max);
-  margin-inline: auto;
-  margin-bottom: clamp(2rem, 4vw, 3rem);
+  margin-inline: calc(-1 * var(--pad));
+  margin-bottom: clamp(2.5rem, 5vw, 4rem);
 }
 
 .wk-case__image-placeholder {
   display: block;
   width: 100%;
-  aspect-ratio: 16 / 7;
+  aspect-ratio: 16 / 8;
   background: color-mix(in srgb, var(--bg) 92%, var(--text) 8%);
-  border-radius: 6px;
+  border-radius: 0;
   overflow: hidden;
   text-decoration: none;
 }
