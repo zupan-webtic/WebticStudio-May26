@@ -574,6 +574,7 @@ function runPageEnterTransition() {
     }
     if (textEl) textEl.textContent = ''
     document.body.style.overflow = ''
+    pageTransitionLock = false
   }
 
   const attachPanelLeaveListener = () => {
@@ -695,8 +696,11 @@ document.addEventListener(
     if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return
     const a = e.target.closest('a')
     if (!a || !shouldRunPageTransition(a)) return
-    e.preventDefault()
+    // Critical: check the lock BEFORE preventing default. If the lock is somehow
+    // stuck true (e.g. bfcache restore preserved module state), letting the link
+    // navigate natively is far better than swallowing the click silently.
     if (pageTransitionLock) return
+    e.preventDefault()
     pageTransitionLock = true
     navigateOutWithTransition(a.href)
   },
@@ -712,7 +716,10 @@ window.addEventListener('pagehide', (e) => {
 })
 // When restored from bfcache (back/forward), the module doesn't re-run but this
 // listener fires — dismiss the overlay that was covering when the page left.
+// The lock MUST be reset here: bfcache preserves the `true` value from the
+// outgoing navigation, which would otherwise kill every subsequent link click.
 window.addEventListener('pageshow', (e) => {
+  pageTransitionLock = false
   if (e.persisted) runPageEnterTransition()
 })
 
