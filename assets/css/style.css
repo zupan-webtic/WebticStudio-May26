@@ -509,31 +509,35 @@ header.scrolled .nav-toggle span { background: var(--text); }
   padding-inline: var(--pad);
   overflow: hidden;
   background: #0a0a0a;
+  /* Hero is decorative + text only; never intercept taps. Prevents the sticky
+     hero (or its WebGL canvas) from eating clicks if iOS dvh shifts cause the
+     offscreen detection to misfire. */
+  pointer-events: none;
 }
 
 /* After scroll past the hero block, hide entirely (IO on inner node can miss GPU bleed / sticky edge cases). */
 .hero.hero--offscreen {
   visibility: hidden;
-  pointer-events: none;
 }
 
 .hero-shader {
   position: absolute;
   inset: 0;
   z-index: 0;
+  pointer-events: none;
   transition: opacity 0.2s ease, visibility 0.2s ease;
 }
 
 .hero-shader.is-offscreen {
   opacity: 0;
   visibility: hidden;
-  pointer-events: none;
 }
 
 .hero-shader canvas {
   display: block;
   width: 100% !important;
   height: 100% !important;
+  pointer-events: none;
 }
 
 /* Dark overlay — left side for copy, bottom for location bar */

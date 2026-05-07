@@ -248,10 +248,14 @@ subscribeLenisScroll(updateNavDark)
 window.addEventListener('resize', updateNavDark, { passive: true })
 updateNavDark()
 
-/** Whole hero (incl. WebGL) must not paint once it has left the viewport — avoids teal/black band over later sections. */
+/** Whole hero (incl. WebGL) must not paint once it has left the viewport — avoids teal/black band over later sections.
+ *  Use document-Y compare (offsetTop + offsetHeight) instead of getBoundingClientRect so iOS URL-bar dvh shifts
+ *  don't desync the toggle. */
 function updateHeroOffscreen() {
   if (!hero) return
-  hero.classList.toggle('hero--offscreen', hero.getBoundingClientRect().bottom < -4)
+  const heroBottomDoc = hero.offsetTop + hero.offsetHeight
+  const scrollY = lenis ? lenis.actualScroll : window.scrollY
+  hero.classList.toggle('hero--offscreen', scrollY > heroBottomDoc + 4)
 }
 subscribeLenisScroll(updateHeroOffscreen)
 window.addEventListener('resize', updateHeroOffscreen, { passive: true })
@@ -425,6 +429,10 @@ if (yearEl) yearEl.textContent = String(new Date().getFullYear())
   if (!section || !track) return
 
   let isSnapping = false
+  /** Mobile/tablet stacks the carousel vertically (CSS `@media max-width: 900px`), so the
+   *  programmatic snap is meaningless there and can fight native scroll. Skip the whole
+   *  snap path under that breakpoint. */
+  const mqDesktopCases = window.matchMedia('(min-width: 901px)')
   /** Document Y of section top — refresh on resize only (avoids layout thrash each scroll tick). */
   let sectionDocTop = 0
   function refreshSectionDocTop() {
@@ -436,6 +444,7 @@ if (yearEl) yearEl.textContent = String(new Date().getFullYear())
   }
 
   function updateCarousel(scrollY) {
+    if (!mqDesktopCases.matches) return
     const p = Math.max(0, Math.min(1, rawProgress(scrollY)))
     track.style.transform = `translate3d(${-p * 100}vw,0,0)`
     if (progressFill) progressFill.style.transform = `scaleX(${p})`
@@ -443,6 +452,7 @@ if (yearEl) yearEl.textContent = String(new Date().getFullYear())
 
   function snapToNearest() {
     if (isSnapping) return
+    if (!mqDesktopCases.matches) return
     const p = rawProgress(lenis.scroll)
     if (p <= 0.02 || p >= 0.98) return
     const targetY = sectionDocTop + (p < 0.5 ? 0 : 1) * window.innerHeight
@@ -468,6 +478,7 @@ if (yearEl) yearEl.textContent = String(new Date().getFullYear())
   subscribeLenisScroll(l => {
     const scrollY = l.scroll
     updateCarousel(scrollY)
+    if (!mqDesktopCases.matches) return
     if (isSnapping) return
     const p = rawProgress(scrollY)
     if (p <= 0.02 || p >= 0.98) {
@@ -538,6 +549,12 @@ function shouldRunPageTransition(anchor) {
 }
 
 function runPageEnterTransition() {
+  // Always shed the inline-script flash class once main.js has the wheel.
+  // Otherwise an edge case (sessionStorage cleared between inline script and
+  // module load) could leave .page-transition with `pointer-events: all`
+  // and z-index 10000, making the entire viewport untappable.
+  document.documentElement.classList.remove('js-nav-enter')
+
   const pendingNav = sessionStorage.getItem('webticNav') === 'pending'
   const navEntry = performance.getEntriesByType('navigation')[0]
   const isHistoryNav = navEntry && navEntry.type === 'back_forward'
@@ -546,8 +563,6 @@ function runPageEnterTransition() {
   const el = document.getElementById('page-transition')
   const textEl = document.getElementById('page-transition-text')
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-
-  document.documentElement.classList.remove('js-nav-enter')
 
   const cleanupOverlay = () => {
     sessionStorage.removeItem('webticNav')
@@ -900,9 +915,15 @@ if (csImgs.length) {
 
   const closeLb = () => {
     lb.classList.remove('is-open')
-    lb.addEventListener('transitionend', () => {
+    let cleared = false
+    const clear = () => {
+      if (cleared) return
+      cleared = true
       document.body.style.overflow = ''
-    }, { once: true })
+    }
+    lb.addEventListener('transitionend', clear, { once: true })
+    // Fallback in case transitionend never fires (mobile Safari can drop it).
+    setTimeout(clear, 400)
   }
 
   csImgs.forEach(el => {
@@ -942,5 +963,18 @@ if (form) {
   const originalTitle = document.title
   document.addEventListener('visibilitychange', () => {
     document.title = document.hidden ? 'Still here.' : originalTitle
+    // Safety net: when the tab becomes visible again, clear any leftover
+    // body-overflow lock unless a modal is genuinely open. Mobile Safari
+    // bfcache restore can leave overlay state inconsistent.
+    if (!document.hidden) {
+      const lbOpen = !!document.querySelector('.cs-lightbox.is-open')
+      const navMobile = document.getElementById('nav-mobile')
+      const navOpen = !!(navMobile && !navMobile.hidden)
+      const pt = document.getElementById('page-transition')
+      const ptCovering = !!(pt && pt.classList.contains('is-covering') && !pt.classList.contains('is-leaving'))
+      if (!lbOpen && !navOpen && !ptCovering) {
+        document.body.style.overflow = ''
+      }
+    }
   })
 })()
