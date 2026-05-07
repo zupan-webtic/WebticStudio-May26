@@ -793,28 +793,30 @@ if (teamGridEl) {
   let velocity = 0
   let dragAxisLocked = null
 
-  const getStep = () => {
-    const first = teamGridEl.querySelector('.team-member')
-    const second = first && first.nextElementSibling
-    if (!first) return 200
-    if (!second) return first.offsetWidth
-    return second.getBoundingClientRect().left - first.getBoundingClientRect().left
+  let momentumRaf = 0
+
+  /** Width of one full grid (cards + their trailing gap). The clone is identical
+   *  and immediately follows, so wrapping translateX modulo this width is seamless. */
+  const getWrapWidth = () => teamGridEl.offsetWidth
+
+  /** Normalize x into the half-open range (-w, 0]. Negative wraps cleanly. */
+  const wrapX = (x) => {
+    const w = getWrapWidth()
+    if (w <= 0) return 0
+    let r = x % w
+    if (r > 0) r -= w
+    return r
   }
 
-  const getMinTranslate = () => {
-    const trackWidth = teamGridEl.scrollWidth
-    const viewportWidth = viewport.offsetWidth
-    return Math.min(0, viewportWidth - trackWidth)
-  }
-
-  const clampWithRubberBand = (x) => {
-    const minX = getMinTranslate()
-    if (x > 0) return x * 0.4
-    if (x < minX) return minX + (x - minX) * 0.4
-    return x
+  const cancelMomentum = () => {
+    if (momentumRaf) {
+      cancelAnimationFrame(momentumRaf)
+      momentumRaf = 0
+    }
   }
 
   const setMode = () => {
+    cancelMomentum()
     if (mqMobile.matches) {
       viewport.classList.add('team-carousel--mobile')
       translateX = 0
@@ -831,6 +833,7 @@ if (teamGridEl) {
   const onTouchStart = (e) => {
     if (!mqMobile.matches) return
     if (e.touches.length !== 1) return
+    cancelMomentum()
     isDragging = true
     dragAxisLocked = null
     dragStartX = e.touches[0].clientX
@@ -853,7 +856,7 @@ if (teamGridEl) {
       if (ax > 8 || ay > 8) dragAxisLocked = ax > ay ? 'x' : 'y'
     }
     if (dragAxisLocked !== 'x') return
-    translateX = clampWithRubberBand(dragStartTranslate + dx)
+    translateX = wrapX(dragStartTranslate + dx)
     track.style.transform = `translateX(${translateX}px)`
 
     const now = performance.now()
@@ -868,15 +871,27 @@ if (teamGridEl) {
     isDragging = false
     if (dragAxisLocked === 'y') return
 
-    const step = getStep()
-    const projected = translateX + velocity * 180
-    let target = Math.round(projected / step) * step
-    const minX = getMinTranslate()
-    target = Math.min(0, Math.max(minX, target))
-    translateX = target
+    /** RAF momentum: keep gliding with exponential velocity decay, wrap modulo
+     *  one grid width each frame so the user never hits an end. */
+    let last = performance.now()
+    const decayPerSec = 1.6 // higher = stops faster (per-second exponential)
+    const minVel = 0.018    // px/ms — below this, animation halts
+    track.style.transition = 'none'
 
-    track.style.transition = 'transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94)'
-    track.style.transform = `translateX(${translateX}px)`
+    const step = (now) => {
+      const dt = Math.max(1, now - last)
+      last = now
+      translateX = wrapX(translateX + velocity * dt)
+      track.style.transform = `translateX(${translateX}px)`
+      velocity *= Math.exp(-decayPerSec * (dt / 1000))
+      if (Math.abs(velocity) > minVel) {
+        momentumRaf = requestAnimationFrame(step)
+      } else {
+        momentumRaf = 0
+      }
+    }
+    cancelMomentum()
+    momentumRaf = requestAnimationFrame(step)
   }
 
   viewport.addEventListener('touchstart', onTouchStart, { passive: true })

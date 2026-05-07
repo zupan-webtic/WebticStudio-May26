@@ -4120,7 +4120,7 @@ body:not(.program-page):not(.legal-page):not(.contact-page)
 
   .s-team__header { grid-template-columns: 1fr; gap: 2rem; }
   .team-member { flex-basis: 180px; }
-  .team-grid--clone { display: none; }
+  /* Clone stays in DOM on mobile — JS uses it to wrap the touch carousel infinitely. */
 
   .s-contact .container { grid-template-columns: 1fr; gap: 3rem; }
   .s-contact h2 { position: static; }
