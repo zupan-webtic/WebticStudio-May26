@@ -1720,47 +1720,51 @@ body.programs-invert .s-team {
 }
 
 /* Team infinite marquee */
-.team-marquee__viewport {
-  overflow: hidden;
+.team-carousel {
+  position: relative;
   width: 100%;
   margin-bottom: clamp(2rem, 4vw, 3rem);
+  overflow: hidden;
 }
 
-.team-marquee__track {
+.team-carousel__track {
   display: flex;
   width: max-content;
   will-change: transform;
-  animation: team-marquee-scroll 22s linear infinite;
+  animation: team-carousel-scroll 28s linear infinite;
 }
 
-.team-marquee__track.is-paused {
-  animation-play-state: paused;
+.team-carousel--mobile {
+  touch-action: pan-y;
+}
+
+.team-carousel--mobile .team-carousel__track {
+  animation: none !important;
 }
 
 @media (hover: hover) {
-  .team-marquee__viewport:hover .team-marquee__track,
-  .team-marquee__viewport:focus-within .team-marquee__track {
+  .team-carousel:hover .team-carousel__track,
+  .team-carousel:focus-within .team-carousel__track {
     animation-play-state: paused;
   }
 }
 
-@keyframes team-marquee-scroll {
+@keyframes team-carousel-scroll {
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }
 }
 
-.team-marquee__track .team-grid {
+.team-carousel__track .team-grid {
   display: flex;
   flex: 0 0 auto;
   margin: 0;
   padding: 0 1rem 0 0;
   overflow: visible;
   list-style: none;
-  /* margin between cards (more reliable than gap with transforms / subpixels) */
   gap: 0;
 }
 
-.team-marquee__track .team-grid > .team-member:not(:last-child) {
+.team-carousel__track .team-grid > .team-member:not(:last-child) {
   margin-inline-end: clamp(1.25rem, 2.5vw, 2rem);
 }
 
@@ -4024,19 +4028,7 @@ body:not(.program-page):not(.legal-page):not(.contact-page)
 
   .s-team__header { grid-template-columns: 1fr; gap: 2rem; }
   .team-member { flex-basis: 180px; }
-  .team-marquee__viewport {
-    overflow-x: auto;
-    overflow-y: hidden;
-    overscroll-behavior-x: contain;
-    scrollbar-width: none;
-  }
-  .team-marquee__viewport::-webkit-scrollbar { display: none; }
-  .team-marquee__track {
-    animation: none !important;
-    transform: none !important;
-    will-change: auto;
-  }
-  .team-grid--marquee-clone { display: none; }
+  .team-grid--clone { display: none; }
 
   .s-contact .container { grid-template-columns: 1fr; gap: 3rem; }
   .s-contact h2 { position: static; }
@@ -4799,7 +4791,7 @@ body.loading { overflow: hidden; }
   .loader-char { animation: none; opacity: 1; filter: none; }
   .page-transition-char { animation: none; opacity: 1; filter: none; }
   .page-transition { transition-duration: 0.01ms !important; }
-  .team-marquee__track {
+  .team-carousel__track {
     animation: none !important;
     transform: none !important;
   }

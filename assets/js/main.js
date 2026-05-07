@@ -733,41 +733,138 @@ if (toggle && mobileNav) {
   })
 }
 
-// Team — random order, then duplicate row for seamless infinite marquee
-const teamCarousel = document.querySelector('.team-grid')
-if (teamCarousel) {
-  const cards = Array.from(teamCarousel.querySelectorAll(':scope > .team-member'))
+// Team carousel — transform-based, no native scroll container.
+// Desktop: CSS keyframe marquee. Mobile: JS touch-driven transform with snap.
+const teamGridEl = document.querySelector('.team-grid')
+if (teamGridEl) {
+  const cards = Array.from(teamGridEl.querySelectorAll(':scope > .team-member'))
   for (let i = cards.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1))
     ;[cards[i], cards[j]] = [cards[j], cards[i]]
   }
-  cards.forEach(li => teamCarousel.appendChild(li))
+  cards.forEach(li => teamGridEl.appendChild(li))
 
   const viewport = document.createElement('div')
-  viewport.className = 'team-marquee__viewport'
+  viewport.className = 'team-carousel'
   const track = document.createElement('div')
-  track.className = 'team-marquee__track'
+  track.className = 'team-carousel__track'
 
-  const parent = teamCarousel.parentNode
-  parent.insertBefore(viewport, teamCarousel)
-  track.appendChild(teamCarousel)
+  const parent = teamGridEl.parentNode
+  parent.insertBefore(viewport, teamGridEl)
+  track.appendChild(teamGridEl)
 
-  const cloneList = teamCarousel.cloneNode(true)
+  const cloneList = teamGridEl.cloneNode(true)
   cloneList.setAttribute('aria-hidden', 'true')
-  cloneList.classList.add('team-grid--marquee-clone')
+  cloneList.classList.add('team-grid--clone')
   track.appendChild(cloneList)
 
   viewport.appendChild(track)
 
-  viewport.addEventListener('touchstart', () => track.classList.add('is-paused'), { passive: true })
-  viewport.addEventListener('touchend', () => {
-    track.classList.remove('is-paused')
-    // iOS Safari routes taps to the most recently active scroll container even
-    // after the gesture ends. Briefly removing pointer-events forces the browser
-    // to recalculate the hit target on the next touch, restoring normal tap routing.
-    viewport.style.pointerEvents = 'none'
-    setTimeout(() => { viewport.style.pointerEvents = '' }, 100)
-  }, { passive: true })
+  const mqMobile = window.matchMedia('(max-width: 900px)')
+  let translateX = 0
+  let isDragging = false
+  let dragStartX = 0
+  let dragStartTranslate = 0
+  let dragStartY = 0
+  let lastMoveX = 0
+  let lastMoveT = 0
+  let velocity = 0
+  let dragAxisLocked = null
+
+  const getStep = () => {
+    const first = teamGridEl.querySelector('.team-member')
+    const second = first && first.nextElementSibling
+    if (!first) return 200
+    if (!second) return first.offsetWidth
+    return second.getBoundingClientRect().left - first.getBoundingClientRect().left
+  }
+
+  const getMinTranslate = () => {
+    const trackWidth = teamGridEl.scrollWidth
+    const viewportWidth = viewport.offsetWidth
+    return Math.min(0, viewportWidth - trackWidth)
+  }
+
+  const clampWithRubberBand = (x) => {
+    const minX = getMinTranslate()
+    if (x > 0) return x * 0.4
+    if (x < minX) return minX + (x - minX) * 0.4
+    return x
+  }
+
+  const setMode = () => {
+    if (mqMobile.matches) {
+      viewport.classList.add('team-carousel--mobile')
+      translateX = 0
+      track.style.transition = 'none'
+      track.style.transform = 'translateX(0px)'
+    } else {
+      viewport.classList.remove('team-carousel--mobile')
+      track.style.transition = ''
+      track.style.transform = ''
+      translateX = 0
+    }
+  }
+
+  const onTouchStart = (e) => {
+    if (!mqMobile.matches) return
+    if (e.touches.length !== 1) return
+    isDragging = true
+    dragAxisLocked = null
+    dragStartX = e.touches[0].clientX
+    dragStartY = e.touches[0].clientY
+    dragStartTranslate = translateX
+    lastMoveX = dragStartX
+    lastMoveT = performance.now()
+    velocity = 0
+    track.style.transition = 'none'
+  }
+
+  const onTouchMove = (e) => {
+    if (!isDragging) return
+    const t = e.touches[0]
+    const dx = t.clientX - dragStartX
+    const dy = t.clientY - dragStartY
+    if (dragAxisLocked === null) {
+      const ax = Math.abs(dx)
+      const ay = Math.abs(dy)
+      if (ax > 8 || ay > 8) dragAxisLocked = ax > ay ? 'x' : 'y'
+    }
+    if (dragAxisLocked !== 'x') return
+    translateX = clampWithRubberBand(dragStartTranslate + dx)
+    track.style.transform = `translateX(${translateX}px)`
+
+    const now = performance.now()
+    const dt = now - lastMoveT
+    if (dt > 0) velocity = (t.clientX - lastMoveX) / dt
+    lastMoveX = t.clientX
+    lastMoveT = now
+  }
+
+  const onTouchEnd = () => {
+    if (!isDragging) return
+    isDragging = false
+    if (dragAxisLocked === 'y') return
+
+    const step = getStep()
+    const projected = translateX + velocity * 180
+    let target = Math.round(projected / step) * step
+    const minX = getMinTranslate()
+    target = Math.min(0, Math.max(minX, target))
+    translateX = target
+
+    track.style.transition = 'transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+    track.style.transform = `translateX(${translateX}px)`
+  }
+
+  viewport.addEventListener('touchstart', onTouchStart, { passive: true })
+  viewport.addEventListener('touchmove', onTouchMove, { passive: true })
+  viewport.addEventListener('touchend', onTouchEnd, { passive: true })
+  viewport.addEventListener('touchcancel', onTouchEnd, { passive: true })
+
+  setMode()
+  if (mqMobile.addEventListener) mqMobile.addEventListener('change', setMode)
+  window.addEventListener('resize', setMode)
 }
 
 // Case study lightbox
