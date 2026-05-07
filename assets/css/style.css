@@ -4493,7 +4493,7 @@ body.loading { overflow: hidden; }
 }
 
 .cs-hero {
-  padding: clamp(5rem, 10vw, 8rem) var(--pad) clamp(3.5rem, 6vw, 5rem);
+  padding: clamp(5rem, 10vw, 8rem) var(--pad) clamp(2rem, 3.5vw, 3rem);
   border-bottom: 1px solid var(--border);
 }
 
@@ -4841,6 +4841,10 @@ body.loading { overflow: hidden; }
   width: 100%;
   aspect-ratio: 16 / 8;
   border-radius: 2px;
+}
+
+.cs-img-wide__inner picture {
+  display: contents;
 }
 
 .cs-img-wide__inner img {
