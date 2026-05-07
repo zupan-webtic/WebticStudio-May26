@@ -1481,7 +1481,10 @@ a.case__content:hover {
   transform: scale(1.07);
 }
 
-/* Future images inside the visual */
+.case__visual picture {
+  display: contents;
+}
+
 .case__visual img {
   position: absolute;
   inset: 0;
@@ -1758,14 +1761,10 @@ body.programs-invert .s-team {
   display: flex;
   flex: 0 0 auto;
   margin: 0;
-  padding: 0 1rem 0 0;
+  padding: 0 clamp(1.25rem, 2.5vw, 2rem) 0 0;
   overflow: visible;
   list-style: none;
-  gap: 0;
-}
-
-.team-carousel__track .team-grid > .team-member:not(:last-child) {
-  margin-inline-end: clamp(1.25rem, 2.5vw, 2rem);
+  gap: clamp(1.25rem, 2.5vw, 2rem);
 }
 
 .team-member {
