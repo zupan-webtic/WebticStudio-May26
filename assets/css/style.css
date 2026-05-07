@@ -2812,11 +2812,17 @@ body:not(.program-page):not(.legal-page):not(.contact-page)
 }
 
 .wk-case__image-placeholder {
+  display: block;
   width: 100%;
   aspect-ratio: 16 / 7;
   background: color-mix(in srgb, var(--bg) 92%, var(--text) 8%);
   border-radius: 6px;
   overflow: hidden;
+  text-decoration: none;
+}
+
+.wk-case__image-placeholder picture {
+  display: contents;
 }
 
 .wk-case__image-placeholder img {
@@ -2824,6 +2830,12 @@ body:not(.program-page):not(.legal-page):not(.contact-page)
   height: 100%;
   object-fit: cover;
   display: block;
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.wk-case__image-placeholder:hover img,
+.wk-case__image-placeholder:focus-visible img {
+  transform: scale(1.04);
 }
 
 /* Program image panel — lives inside program-intro__aside */
@@ -4090,6 +4102,15 @@ body:not(.program-page):not(.legal-page):not(.contact-page)
 
   .wk-case__sector-detail { display: none; }
   .wk-case__text { display: none; }
+
+  .wk-case__image-placeholder {
+    aspect-ratio: unset;
+    height: auto;
+  }
+  .wk-case__image-placeholder img {
+    height: auto;
+    object-fit: unset;
+  }
 
   .wk-case__cta {
     font-size: 1rem;
