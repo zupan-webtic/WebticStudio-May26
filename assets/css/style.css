@@ -2806,14 +2806,15 @@ body:not(.program-page):not(.legal-page):not(.contact-page)
 
 /* Work page — scrolling image reel */
 .wk-case__image {
-  margin-inline: calc(-1 * var(--pad));
+  max-width: var(--max);
+  margin-inline: auto;
   margin-bottom: clamp(2.5rem, 5vw, 4rem);
 }
 
 .wk-case__image-placeholder {
   display: block;
   width: 100%;
-  aspect-ratio: 16 / 8;
+  aspect-ratio: 16 / 9;
   background: color-mix(in srgb, var(--bg) 92%, var(--text) 8%);
   border-radius: 0;
   overflow: hidden;
@@ -4102,15 +4103,6 @@ body:not(.program-page):not(.legal-page):not(.contact-page)
   .wk-case__sector-detail { display: none; }
   .wk-case__text { display: none; }
 
-  .wk-case__image-placeholder {
-    aspect-ratio: unset;
-    height: auto;
-  }
-  .wk-case__image-placeholder img {
-    height: auto;
-    object-fit: unset;
-  }
-
   .wk-case__cta {
     font-size: 1rem;
     border-bottom-width: 2px;
@@ -4927,8 +4919,7 @@ body.loading { overflow: hidden; }
 
 .cs-img-grid figure img {
   width: 100%;
-  aspect-ratio: 4 / 3;
-  object-fit: cover;
+  height: auto;
   display: block;
   border-radius: 2px;
 }
