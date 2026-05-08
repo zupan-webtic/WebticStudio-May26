@@ -818,9 +818,14 @@ if (teamGridEl) {
     { rootMargin: '120px 0px', threshold: 0 }
   )
 
-  /** Width of one full grid (cards + their trailing gap). The clone is identical
-   *  and immediately follows, so wrapping translateX modulo this width is seamless. */
-  const getWrapWidth = () => teamGridEl.offsetWidth
+  /** Distance from the start of the original grid to the start of the clone.
+   *  getBoundingClientRect diff cancels out the current translateX so we get
+   *  the natural layout distance, and works correctly in Safari where
+   *  will-change:transform does not establish an offsetParent. */
+  const getWrapWidth = () => {
+    const d = cloneList.getBoundingClientRect().left - teamGridEl.getBoundingClientRect().left
+    return d > 0 ? d : teamGridEl.offsetWidth
+  }
 
   /** Normalize x into the half-open range (-w, 0]. Negative wraps cleanly. */
   const wrapX = (x) => {
