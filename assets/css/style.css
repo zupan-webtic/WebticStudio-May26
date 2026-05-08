@@ -1488,6 +1488,60 @@ header.scrolled .nav-toggle span { background: var(--text); }
   height: 100vh;
 }
 
+/* Decorative shape pattern — replaces the hairline divider between Programs
+   and Case Studies on mobile. Hidden on desktop; the carousel's own scroll
+   transition is the divider there. */
+.shape-divider {
+  display: none;
+}
+
+@media (max-width: 600px) {
+  .shape-divider {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    gap: clamp(0.6rem, 2.5vw, 1rem);
+    padding-block: clamp(0.75rem, 2.5vw, 1.25rem);
+    padding-inline: 0;
+    background: var(--bg);
+    position: relative;
+    z-index: 11;
+    overflow: hidden;
+    /* Pull up into the Programs section to compensate for its 3rem bottom
+       padding (.s-programs__inner) — without this the gap above the divider
+       reads much larger than the gap below it.
+       The -1px on the bottom still seals against the shader leak. */
+    margin-top: clamp(-2.75rem, -7vw, -1.75rem);
+    margin-bottom: -1px;
+  }
+
+  .shape-divider__shape {
+    height: clamp(1.4rem, 4.5vw, 2rem);
+    width: auto;
+    display: block;
+    flex: 0 0 auto;
+    /* Shapes ship as black-on-transparent PNGs. Flip to white once the page
+       has scroll-inverted to dark, so they stay visible on both backgrounds. */
+    filter: invert(var(--invert-progress));
+  }
+
+  /* Kill every line that could sandwich the shape pattern. The pattern
+     IS the divider — no thin hairlines at its top or bottom edges. */
+  .s-cases,
+  .s-cases__pin {
+    border-top: none !important;
+  }
+  .s-programs .program-row:last-of-type,
+  .s-programs .program-row:last-child,
+  .s-programs__items > *:last-child,
+  .s-programs__items {
+    border-bottom: none !important;
+  }
+  .s-programs {
+    box-shadow: none;
+  }
+}
+
 /* Horizontal track, driven by JS translateX */
 .s-cases__track {
   display: flex;
@@ -4108,9 +4162,28 @@ body:not(.program-page):not(.legal-page):not(.contact-page)
   .s-cases__scroll-space { display: none; }
   .s-cases__track { flex-direction: column; width: 100%; height: auto; transform: none !important; }
   .s-cases__progress { display: none; }
-  .case { width: 100%; min-width: 0; height: auto; grid-template-columns: 1fr; border-top: 1px solid var(--border); }
-  .case:first-child { border-top: none; }
-  .case__content { justify-content: flex-start; gap: 2rem; padding: clamp(2.5rem, 6vw, 4rem) var(--pad); border-right: none; border-bottom: 1px solid var(--border); }
+  /* Hairline divider only between adjacent cases. Uses a faint translucent
+     gray that adapts to both light and dark. The boundary above the FIRST case
+     (between Programs and Case Studies) is handled by `.shape-divider` instead. */
+  .case {
+    width: 100%;
+    min-width: 0;
+    height: auto;
+    grid-template-columns: 1fr;
+    background: var(--bg);
+    padding-top: 0;
+  }
+  .case + .case {
+    border-top: 1px solid color-mix(in srgb, var(--muted) 50%, transparent);
+    margin-top: clamp(2rem, 5vw, 3rem);
+  }
+  .case__content {
+    justify-content: flex-start;
+    gap: 2rem;
+    padding: clamp(2rem, 5vw, 3rem) var(--pad) clamp(2.5rem, 6vw, 4rem);
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
   .case__visual { aspect-ratio: 16 / 9; height: auto; }
   .case__headline { font-size: clamp(1.25rem, 5vw, 1.6rem); max-width: none; }
   .case__text { max-width: none; }

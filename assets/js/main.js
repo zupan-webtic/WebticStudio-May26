@@ -794,6 +794,27 @@ if (teamGridEl) {
   let dragAxisLocked = null
 
   let momentumRaf = 0
+  let autoRaf = 0
+  let autoLast = 0
+  let viewportInView = true
+  /** Mobile auto-scroll speed (px / ms). Match desktop marquee pace roughly. */
+  const AUTO_PX_PER_MS = 0.028
+  const reduceMotionMq = window.matchMedia('(prefers-reduced-motion: reduce)')
+
+  /** Stop animating when the carousel is scrolled out of view — otherwise the
+   *  RAF + transform writes run every frame across the whole site, causing
+   *  scroll jank on lower-end phones. */
+  const inViewObserver = new IntersectionObserver(
+    ([entry]) => {
+      viewportInView = !!(entry && entry.isIntersecting)
+      if (!viewportInView) {
+        stopAuto()
+      } else if (mqMobile.matches && !isDragging && !momentumRaf) {
+        startAuto()
+      }
+    },
+    { rootMargin: '120px 0px', threshold: 0 }
+  )
 
   /** Width of one full grid (cards + their trailing gap). The clone is identical
    *  and immediately follows, so wrapping translateX modulo this width is seamless. */
@@ -815,13 +836,45 @@ if (teamGridEl) {
     }
   }
 
+  const stopAuto = () => {
+    if (autoRaf) {
+      cancelAnimationFrame(autoRaf)
+      autoRaf = 0
+    }
+  }
+
+  /** Continuous left drift that wraps modulo one grid width. Pauses while the
+   *  user touches, momentum is active, or the carousel is scrolled out of view. */
+  const startAuto = () => {
+    if (!mqMobile.matches) return
+    if (reduceMotionMq.matches) return
+    if (!viewportInView) return
+    if (autoRaf) return
+    autoLast = performance.now()
+    const tick = (now) => {
+      if (!mqMobile.matches || isDragging || momentumRaf || !viewportInView) {
+        autoRaf = 0
+        return
+      }
+      const dt = Math.min(48, now - autoLast)
+      autoLast = now
+      translateX = wrapX(translateX - AUTO_PX_PER_MS * dt)
+      track.style.transition = 'none'
+      track.style.transform = `translateX(${translateX}px)`
+      autoRaf = requestAnimationFrame(tick)
+    }
+    autoRaf = requestAnimationFrame(tick)
+  }
+
   const setMode = () => {
     cancelMomentum()
+    stopAuto()
     if (mqMobile.matches) {
       viewport.classList.add('team-carousel--mobile')
       translateX = 0
       track.style.transition = 'none'
       track.style.transform = 'translateX(0px)'
+      startAuto()
     } else {
       viewport.classList.remove('team-carousel--mobile')
       track.style.transition = ''
@@ -834,6 +887,7 @@ if (teamGridEl) {
     if (!mqMobile.matches) return
     if (e.touches.length !== 1) return
     cancelMomentum()
+    stopAuto()
     isDragging = true
     dragAxisLocked = null
     dragStartX = e.touches[0].clientX
@@ -869,7 +923,11 @@ if (teamGridEl) {
   const onTouchEnd = () => {
     if (!isDragging) return
     isDragging = false
-    if (dragAxisLocked === 'y') return
+    if (dragAxisLocked === 'y') {
+      // Vertical scroll, not a carousel swipe — restart the auto-drift.
+      startAuto()
+      return
+    }
 
     /** RAF momentum: keep gliding with exponential velocity decay, wrap modulo
      *  one grid width each frame so the user never hits an end. */
@@ -888,6 +946,8 @@ if (teamGridEl) {
         momentumRaf = requestAnimationFrame(step)
       } else {
         momentumRaf = 0
+        // Resume the gentle auto-drift now that the user's flick has settled.
+        startAuto()
       }
     }
     cancelMomentum()
@@ -899,6 +959,7 @@ if (teamGridEl) {
   viewport.addEventListener('touchend', onTouchEnd, { passive: true })
   viewport.addEventListener('touchcancel', onTouchEnd, { passive: true })
 
+  inViewObserver.observe(viewport)
   setMode()
   if (mqMobile.addEventListener) mqMobile.addEventListener('change', setMode)
   window.addEventListener('resize', setMode)
@@ -970,7 +1031,12 @@ if (form) {
     btn.disabled = true
 
     try {
-      const res = await fetch(form.action, { method: 'POST', body: new FormData(form) })
+      const data = Object.fromEntries(new FormData(form))
+      const res = await fetch(form.action, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      })
       btn.textContent = res.ok ? "Sent — we'll be in touch." : 'Error — please try again.'
       if (res.ok) form.reset()
       else btn.disabled = false
