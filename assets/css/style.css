@@ -1499,29 +1499,21 @@ header.scrolled .nav-toggle span { background: var(--text); }
   .shape-divider {
     display: flex;
     align-items: center;
-    justify-content: space-around;
-    gap: clamp(0.6rem, 2.5vw, 1rem);
-    padding-block: clamp(0.75rem, 2.5vw, 1.25rem);
-    padding-inline: 0;
+    justify-content: center;
+    gap: clamp(1.25rem, 5vw, 2rem);
+    padding-block: clamp(2rem, 6vw, 3rem);
     background: var(--bg);
     position: relative;
     z-index: 11;
-    overflow: hidden;
-    /* Pull up into the Programs section to compensate for its 3rem bottom
-       padding (.s-programs__inner) — without this the gap above the divider
-       reads much larger than the gap below it.
-       The -1px on the bottom still seals against the shader leak. */
     margin-top: clamp(-2.75rem, -7vw, -1.75rem);
     margin-bottom: -1px;
   }
 
   .shape-divider__shape {
-    height: clamp(1.4rem, 4.5vw, 2rem);
+    height: clamp(1.5rem, 5vw, 2.25rem);
     width: auto;
     display: block;
     flex: 0 0 auto;
-    /* Shapes ship as black-on-transparent PNGs. Flip to white once the page
-       has scroll-inverted to dark, so they stay visible on both backgrounds. */
     filter: invert(var(--invert-progress));
   }
 

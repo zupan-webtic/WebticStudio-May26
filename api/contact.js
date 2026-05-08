@@ -23,7 +23,7 @@ export default async function handler(req, res) {
 
   try {
     await resend.emails.send({
-      from: 'Contact Form <onboarding@resend.dev>',
+      from: 'Webtic Studio <hello@form.webtic.studio>',
       to: 'matic@webtic.si',
       replyTo: email,
       subject: `New inquiry from ${name} — ${company}`,
