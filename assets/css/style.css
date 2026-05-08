@@ -1888,10 +1888,10 @@ body.programs-invert .s-team {
   display: flex;
   flex: 0 0 auto;
   margin: 0;
-  padding: 0 clamp(1.25rem, 2.5vw, 2rem) 0 0;
+  padding: 0 clamp(1.5rem, 3vw, 2.5rem) 0 0;
   overflow: visible;
   list-style: none;
-  gap: clamp(1.25rem, 2.5vw, 2rem);
+  gap: clamp(1.5rem, 3vw, 2.5rem);
 }
 
 .team-member {
@@ -1912,6 +1912,7 @@ body.programs-invert .s-team {
   border-radius: 3px;
   overflow: hidden;
   background: #f2f2f2;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1);
 }
 
 .team-member__photo {
