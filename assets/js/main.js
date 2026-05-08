@@ -230,6 +230,8 @@ function updateNavFromLenis(l) {
 }
 subscribeLenisScroll(updateNavFromLenis)
 updateNav(lenis.scroll)
+// Fallback for browsers that intercept scroll (e.g. Telegram in-app browser)
+window.addEventListener('scroll', () => updateNav(window.scrollY), { passive: true })
 
 // Chameleon nav — sync header palette to the section it overlaps
 function updateNavDark() {
