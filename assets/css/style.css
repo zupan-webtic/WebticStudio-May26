@@ -1859,39 +1859,19 @@ body.programs-invert .s-team {
   will-change: transform;
 }
 
-/* Marquee runs only on desktop. Scoping it to a media query (instead of relying
-   on a JS-applied .team-carousel--mobile class) means the animation cannot
-   leak onto mobile under any FOUC / JS-error / race condition. */
-@media (min-width: 901px) {
-  .team-carousel__track {
-    animation: team-carousel-scroll 28s linear infinite;
-  }
-}
-
 .team-carousel--mobile {
   touch-action: pan-y;
 }
 
-@media (hover: hover) {
-  .team-carousel:hover .team-carousel__track,
-  .team-carousel:focus-within .team-carousel__track {
-    animation-play-state: paused;
-  }
-}
-
-@keyframes team-carousel-scroll {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
-}
 
 .team-carousel__track .team-grid {
   display: flex;
   flex: 0 0 auto;
   margin: 0;
-  padding: 0 clamp(1.5rem, 3vw, 2.5rem) 0 0;
+  padding: 0 clamp(2rem, 3.5vw, 3rem) 0 0;
   overflow: visible;
   list-style: none;
-  gap: clamp(1.5rem, 3vw, 2.5rem);
+  gap: clamp(2rem, 3.5vw, 3rem);
 }
 
 .team-member {

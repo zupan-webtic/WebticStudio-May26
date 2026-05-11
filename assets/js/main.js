@@ -811,7 +811,7 @@ if (teamGridEl) {
       viewportInView = !!(entry && entry.isIntersecting)
       if (!viewportInView) {
         stopAuto()
-      } else if (mqMobile.matches && !isDragging && !momentumRaf) {
+      } else if (!isDragging && !momentumRaf) {
         startAuto()
       }
     },
@@ -853,13 +853,12 @@ if (teamGridEl) {
   /** Continuous left drift that wraps modulo one grid width. Pauses while the
    *  user touches, momentum is active, or the carousel is scrolled out of view. */
   const startAuto = () => {
-    if (!mqMobile.matches) return
     if (reduceMotionMq.matches) return
     if (!viewportInView) return
     if (autoRaf) return
     autoLast = performance.now()
     const tick = (now) => {
-      if (!mqMobile.matches || isDragging || momentumRaf || !viewportInView) {
+      if (isDragging || momentumRaf || !viewportInView) {
         autoRaf = 0
         return
       }
@@ -876,18 +875,11 @@ if (teamGridEl) {
   const setMode = () => {
     cancelMomentum()
     stopAuto()
-    if (mqMobile.matches) {
-      viewport.classList.add('team-carousel--mobile')
-      translateX = 0
-      track.style.transition = 'none'
-      track.style.transform = 'translateX(0px)'
-      startAuto()
-    } else {
-      viewport.classList.remove('team-carousel--mobile')
-      track.style.transition = ''
-      track.style.transform = ''
-      translateX = 0
-    }
+    viewport.classList.toggle('team-carousel--mobile', mqMobile.matches)
+    translateX = 0
+    track.style.transition = 'none'
+    track.style.transform = 'translateX(0px)'
+    startAuto()
   }
 
   const onTouchStart = (e) => {
